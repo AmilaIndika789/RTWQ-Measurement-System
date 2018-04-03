@@ -1,0 +1,24 @@
+{
+  "name": "water_quality_retrieval_api",
+  "version": "1.0.0",
+  "description": "A Node.js RESTful API to retrive the water quality",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmilaIndika789/RTWQ-Measurement-System.git"
+  },
+  "keywords": [
+    "node",
+    "RESTful",
+    "API"
+  ],
+  "author": "Amila Indika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmilaIndika789/RTWQ-Measurement-System/issues"
+  },
+  "homepage": "https://github.com/AmilaIndika789/RTWQ-Measurement-System#readme"
+}
