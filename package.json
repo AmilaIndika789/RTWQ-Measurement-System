@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/AmilaIndika789/RTWQ-Measurement-System/issues"
   },
-  "homepage": "https://github.com/AmilaIndika789/RTWQ-Measurement-System#readme"
+  "homepage": "https://github.com/AmilaIndika789/RTWQ-Measurement-System#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
