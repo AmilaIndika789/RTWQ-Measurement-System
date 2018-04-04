@@ -32,14 +32,16 @@ router.get('/:specificQuality', (req, res, next) => {
 //Handle data over time domain (time distribution)
 
     //Handle the GET requests coming to 'host/waterQualities/date/{date}'
-    router.get('/date/:date', (req, res, next) => {
+    router.get('/date/:date/:specificQuality?', (req, res, next) => {
         //Extract the date from the request
         const dateRequested = req.params.date;
+        var specificQuality = req.params.specificQuality;
 
         //Send a json object with HTTP status code 200    
         res.status(200).json({
             message: 'You requested data of a specific date',
-            date: dateRequested
+            date: dateRequested,
+            specificQuality: specificQuality
         });
     });
 
@@ -58,14 +60,16 @@ router.get('/:specificQuality', (req, res, next) => {
 //Handle data over space (spatial distribution)
 
     //Handle the GET requests coming to 'host/waterQualities/position/{position}'
-    router.get('/position/:position', (req, res, next) => {
+    router.get('/position/:position/:specificQuality?', (req, res, next) => {
         //Extract the date from the request
         const positionRequested = req.params.position;
+        var specificQuality = req.params.specificQuality;
 
         //Send a json object with HTTP status code 200    
         res.status(200).json({
             message: 'You requested data of a specific position',
-            position: positionRequested
+            position: positionRequested,
+            specificQuality: specificQuality
         });
     });
 
