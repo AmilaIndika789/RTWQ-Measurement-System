@@ -85,5 +85,4 @@ router.get('/:specificQuality', (req, res, next) => {
         });
     });
 
-
 module.exports = router;    //Export the router configuration
