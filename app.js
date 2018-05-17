@@ -1,15 +1,31 @@
 const express = require('express');     //Import the express package
 const app = express();      //Create an express application
 const morgan = require('morgan');   //Import morgan package
+const bodyParser = require('body-parser');  //Import body-parser package
 
 //Import route file needed to forward the requests coming to 'host/waterQualities'
 const waterQualitiesRoutes = require('./api/routes/waterQualities');
 const endNodesRoutes = require('./api/routes/endNodes');
 
 //Setting up a middle-ware to pass the incoming requests
-    //Log all the requests by passing through the morgan middleware
-    app.use(morgan('dev'));
+    app.use(morgan('dev')); //Log all the requests by passing through the morgan middleware
+    app.use(bodyParser.urlencoded({extended: false}));  //Parse the simple url encoded bodies
+    app.use(bodyParser.json()); //Extract the json data
 
+    //Handle CORS(Cross-Origin Resource Sharing) to add the CORS headers
+    app.use((req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); //Allow any client to access resources
+        res.header(
+            'Access-Control-Allow-Headers', 
+            'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        );
+        if(req.method === 'OPTIONS'){   //Check for the OPTIONS request send by the browser before the POST request
+            res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+            return res.status(200).json({});
+        }
+        next();
+    });
+    
     //Routes which should handle requests
     app.use('/waterQualities', waterQualitiesRoutes);
     app.use('/endNodes', endNodesRoutes);

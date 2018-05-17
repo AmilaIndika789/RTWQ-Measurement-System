@@ -11,9 +11,16 @@ router.get('/', (req, res, next) => {
 
 //Handle the POST requests coming to 'host/endNodes/'
 router.post('/', (req, res, next) => {
+    const endNode = {
+        nodeId: req.body.nodeId,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        positionName: req.body.positionName
+    };
     //Send a json object with HTTP status code 200
-    res.status(200).json({
-        message: 'Handling the POST requests to /endNodes'
+    res.status(201).json({
+        message: 'end node was created',
+        createdEndNode: endNode
     });
 });
 
