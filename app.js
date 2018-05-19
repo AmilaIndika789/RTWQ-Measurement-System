@@ -2,10 +2,13 @@ const express = require('express');     //Import the express package
 const app = express();      //Create an express application
 const morgan = require('morgan');   //Import morgan package
 const bodyParser = require('body-parser');  //Import body-parser package
+const mongoose = require('mongoose');   //Import mongoose
 
 //Import route file needed to forward the requests coming to 'host/waterQualities'
 const waterQualitiesRoutes = require('./api/routes/waterQualities');
 const endNodesRoutes = require('./api/routes/endNodes');
+
+mongoose.connect('mongodb://mike:' + process.env.MONGO_ATLAS_PW + '@cluster0-shard-00-00-k319j.mongodb.net:27017,cluster0-shard-00-01-k319j.mongodb.net:27017,cluster0-shard-00-02-k319j.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=false');
 
 //Setting up a middle-ware to pass the incoming requests
     app.use(morgan('dev')); //Log all the requests by passing through the morgan middleware
