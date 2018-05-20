@@ -83,9 +83,9 @@ router.get('/:id', (req, res, next) => {
 });
 
 //Handle the DELETE requests coming to 'host/endNodes/{id}'
-router.delete('/:nodeId', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
     //Extract the id required from the request
-    const id = req.params.nodeId;
+    const id = req.params.id;
 
     //Send a json object with HTTP status code 200
     EndNode.remove({ _id: id })
