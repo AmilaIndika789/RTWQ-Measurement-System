@@ -45,7 +45,7 @@ router.post('/', (req, res, next) => {
         console.log(result),
         //Send a json object with HTTP status code 200
         res.status(201).json({
-            message: 'end node was created',
+            message: 'end node was created successfully',
             createdEndNode: result
         });
     })

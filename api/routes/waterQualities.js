@@ -1,5 +1,6 @@
 const express = require('express');     //Import the express package
 const router = express.Router();    //Import the router sub-package to handle routes
+const moment = require('moment');   //Import the moment package
 
 const WaterQualities = require('../models/waterQualitiesModel');    //Import the WaterQualities model
 
@@ -8,11 +9,36 @@ router.get('/', (req, res, next) => {
     //Send a json object with HTTP status code 200
     //Get all the water qualities data
     WaterQualities.find()
+        .select('_id date longitude latitude temperature turbidity pH conductivity positionName')
         .exec()
         .then(docs => {
-            console.log(docs);
+            const response = {
+                count: docs.length,
+                waterQualities: docs.map(doc => {
+                    var date = new Date(doc.date);
+                    var d = date.getDate();
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    return {
+                        _id: doc._id,
+                        date: doc.date,
+                        longitude: doc.longitude,
+                        latitude: doc.latitude,
+                        temperature: doc.temperature,
+                        turbidity: doc.turbidity,
+                        pH: doc.pH,
+                        conductivity: doc.conductivity,
+                        positionName: doc.positionName,
+                        request: {
+                            type: 'GET',
+                            urlPosition: 'http://localhost:3000/waterQualities/position/' + doc.positionName,
+                            urlDate: 'http://localhost:3000/waterQualities/date/' + moment(doc.date).format('YYYY-MM-DD')
+                        }
+                    }
+                })
+            };
             // if(docs.length > 0){
-                res.status(200).json(docs); //Send a json object with HTTP status code 200
+                res.status(200).json(response); //Send a json object with HTTP status code 200
             // }else{
             //     res.status(404).json({
             //         message: 'No entries found'
@@ -53,16 +79,42 @@ router.get('/:specificQuality', (req, res, next) => {
     if(qualityRequested == "temperature"){
         //Get the data from the database for the specific quality
         WaterQualities.find({},{_id:true, date:true, temperature:true, longitude:true, latitude: true, positionName: true})
+        .select('_id datetemperature  longitude latitude positionName')
         .exec()
-        .then(doc => {
-            console.log("From database", doc);
-            if(doc){
-                res.status(200).json(doc);  //Send a json object with HTTP status code 200            
-            }else{
-                res.status(404).json({  //Send a json object with HTTP status code 404
-                    message: "No valid entry found for the provided quality"
-                });
-            }
+        .then(docs => {
+            // console.log("From database", doc);
+            // if(doc){
+            //     res.status(200).json(doc);  //Send a json object with HTTP status code 200            
+            // }else{
+            //     res.status(404).json({  //Send a json object with HTTP status code 404
+            //         message: "No valid entry found for the provided quality"
+            //     });
+            // }
+            const response = {
+                count: docs.length,
+                waterQualities: docs.map(doc => {
+                    var date = new Date(doc.date);
+                    var d = date.getDate();
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    return {
+                        _id: doc._id,
+                        date: doc.date,
+                        longitude: doc.longitude,
+                        temperature: doc.temperature,
+                        latitude: doc.latitude,
+                        
+                        positionName: doc.positionName
+                        // request: {
+                        //     type: 'GET',
+                        //     urlPosition: 'http://localhost:3000/waterQualities/position/' + doc.positionName,
+                        //     urlDate: 'http://localhost:3000/waterQualities/date/' + moment(doc.date).format('YYYY-MM-DD')
+                        // }
+                    }
+                })
+            };
+            res.status(200).json(response); //Send a json object with HTTP status code 200
+
         })
         .catch(err => {
             console.log(err),
@@ -208,6 +260,7 @@ router.get('/:specificQuality', (req, res, next) => {
                 });
         }else if(!specificQuality){
             WaterQualities.find({date: dateRequested})
+                .select('_id date longitude latitude temperature turbidity pH conductivity positionName')        
                 .exec()
                 .then(doc => {
                 console.log("From database", doc);
@@ -362,6 +415,7 @@ router.get('/:specificQuality', (req, res, next) => {
                 });
         }else if(!specificQuality){
             WaterQualities.find({positionName: positionRequested})
+                .select('_id date longitude latitude temperature turbidity pH conductivity positionName')   
                 .exec()
                 .then(doc => {
                 console.log("From database", doc);
